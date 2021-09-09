@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			api: "https://3001-green-marsupial-7x8xtwuv.ws-us16.gitpod.io"
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -41,6 +42,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			uploadFile: formData => {
+				const store = getStore();
+
+				fetch(`${store.api}/upload/profile`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "multipart/form-data"
+					},
+					body: formData
+				})
+					.then(resp => {
+						console.log("respuesta", resp);
+						if (resp.ok) {
+							return resp.json();
+						}
+					})
+					.then(data => {
+						console.log("data", data);
+					})
+					.catch(error => console.log("[ERROR TO UPLOADO FILE]", error));
 			}
 		}
 	};
